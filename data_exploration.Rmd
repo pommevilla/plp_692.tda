@@ -8,15 +8,49 @@ knitr::opts_chunk$set(echo = TRUE, fig.path = "images/")
 
 ```{r setup.2}
 library(data.table, warn.conflicts = FALSE)
-library(igraph, warn.conflicts = FALSE)
 library(ggplot2, warn.conflicts = FALSE)
 ```
 
 # Intro
 
-This RMarkdown file accompanies the paper "Using persistent homology and dynamical distances to analyze protein binding" by Kovacev-Nikolic et al. 
+This RMarkdown file accompanies the paper "Using persistent homology and dynamical distances to analyze protein binding" by Kovacev-Nikolic et al.  It is meant as an exploration of topological data analysis and its application to datasets.
 
-```{r load.setup.2}
+```{r setup.3}
 library(TDA)
 ```
 
+# Toy dataset
+
+```{r gen_data.1}
+circle.1 <- circleUnif(60)
+circle.2 <- circleUnif(60, r = 2) + 3
+circles <- rbind(circle.1, circle.2)
+plot(circles, pch = 16, xlab = "",ylab = "")
+```
+
+```{r gen_data.2}
+max_dimension <- 1
+max_scale <- 5
+```
+
+```{r gen_data.3}
+diag <- ripsDiag(X = circles, max_dimension, max_scale, library = "GUDHI", printProgress = FALSE)
+summary(diag[['diagram']])
+```
+
+```{r gen_data.4}
+plot(diag[['diagram']])
+```
+
+# Crater dataset
+
+```{r crater.1}
+crater <- read.table("./data/craters.txt")
+plot(crater, cex = 0.1, main = "Crater Dataset", xlab = "x", ylab = "y")
+```
+
+```{r crater.2}
+crater.grid <- expand.grid(seq(0, 10, by = 0.1),
+                           seq(0, 10, by = 0.1))
+knn <- 
+```
