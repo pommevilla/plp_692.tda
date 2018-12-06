@@ -7,7 +7,6 @@ knitr::opts_chunk$set(echo = TRUE, fig.path = "images/")
 ```
 
 ```{r setup.2}
-library(data.table, warn.conflicts = FALSE)
 library(ggplot2, warn.conflicts = FALSE)
 ```
 
@@ -50,7 +49,15 @@ plot(crater, cex = 0.1, main = "Crater Dataset", xlab = "x", ylab = "y")
 ```
 
 ```{r crater.2}
-crater.grid <- expand.grid(seq(0, 10, by = 0.1),
-                           seq(0, 10, by = 0.1))
-knn <- 
+coord_seq <- seq(0, 10, by = 0.1)
+crater.grid <- expand.grid(coord_seq, coord_seq)
+crater.knn <- knnDE(X = crater, Grid = crater.grid, k = 100)
+```
+
+```{r crater.3}
+persp(coord_seq, coord_seq,
+      matrix(crater.knn, ncol = length(coord_seq), nrow = length(coord_seq)),
+      xlab = "", ylab = "", zlab = "",
+      theta = -20, phi = 35, ltheta = 50,col = 2, 
+      main = "KDE", d = 0.5)
 ```
