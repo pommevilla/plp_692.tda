@@ -1,5 +1,5 @@
 ---
-title: "Tipping Points of AMR"
+title: "Topological data analysis practice"
 ---
 
 All code and analysis presented here by [Paul Villanueva][paul_github].
