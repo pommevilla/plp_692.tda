@@ -5,8 +5,8 @@ navbar:
   left:
   - text: Project Overview
     href: index.html
-  - text: Data Exploration
-    href: data_exploration.html
+  - text: Topological Data Analysis Practice
+    href: tda_practice.html
     
 output:
   html_document:
