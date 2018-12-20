@@ -61,3 +61,69 @@ persp(coord_seq, coord_seq,
       theta = -20, phi = 35, ltheta = 50,col = 2, 
       main = "KDE", d = 0.5)
 ```
+
+```{r crater.4}
+# calculate persistent homology for both datasets
+# dim = 1 is maximum dimension of cycles for 2-dimensional data; increase
+# appropriately for larger dimensions (dim := dimension - 1)
+
+crater.hom <- calculate_homology(as.matrix(crater), dim = 1)
+
+# plot circle point cloud as topological barcode
+# we see a single persistent bar, as expected for a circle (single 1-cycle/loop)
+plot_barcode(crater.hom)
+plot_persist(crater.hom)
+plot(circ.2d)
+```
+
+```{r something_else}
+Diag <- matrix(c(0, 0, 10, 1, 0, 3, 1, 3, 8), ncol = 3, byrow = TRUE)
+DiagLim <- 10
+colnames(Diag) <- c("dimension", "Birth", "Death")
+
+#persistence landscape
+tseq <- seq(0,DiagLim, length = 1000)
+Land <- landscape(Diag, dimension = 1, KK = 1, tseq)
+
+par(mfrow = c(1,2))
+plot.diagram(Diag)
+plot(tseq, Land, type = "l", xlab = "t", ylab = "landscape", asp = 1)
+```
+
+
+```{r }
+# install TDAstats package from CRAN and load
+install.packages("TDAstats")
+library("TDAstats")
+
+# make code reproducible
+set.seed(1)
+
+# create dataset: point cloud with 100 2-dimensional uniformly distributed points in a unit square
+unif.2d <- cbind(runif(100), runif(100))
+
+# create dataset: 100-points on a circle in 2 dimensions
+angles <- runif(100, 0, 2 * pi)
+circ.2d <- cbind(cos(angles), sin(angles))
+
+ggplot(as.data.frame(circ.2d)) + geom_point(aes(x = as.data.frame(circ.2d)[,1], y = as.data.frame(circ.2d)[, 2]))+
+  labs(x = "", y = "")
+
+# calculate persistent homology for both datasets
+# dim = 1 is maximum dimension of cycles for 2-dimensional data; increase
+# appropriately for larger dimensions (dim := dimension - 1)
+unif.hom <- calculate_homology(unif.2d, dim = 1)
+circ.hom <- calculate_homology(circ.2d, dim = 1)
+
+# plot uniformly distributed point cloud as persistence diagram
+# although some features might look significant, the units on this diagram
+# and the following barcode will clarify that all the features in this diagram
+# are pretty short/represent noise
+plot_persist(unif.hom)
+
+# plot circle point cloud as topological barcode
+# we see a single persistent bar, as expected for a circle (single 1-cycle/loop)
+plot_barcode(circ.hom)
+plot_persist(circ.hom)
+plot(circ.2d)
+```
